@@ -10,7 +10,7 @@ module.exports = {
   networks: {
     volta: {
       url: 'https://volta-rpc.energyweb.org/',
-      accounts: process.env.ACCOUNT_PRIVATE
+      accounts: [process.env.ACCOUNT_PRIVATE],
     }
   }
 };
