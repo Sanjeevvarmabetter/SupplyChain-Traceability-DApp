@@ -9,7 +9,7 @@ module.exports = {
   solidity: "0.8.24",
   networks: {
     volta: {
-      url: 'https://volta-rpc.energyweb.org/',
+      url: "https://volta-rpc.energyweb.org", 
       accounts: [process.env.ACCOUNT_PRIVATE],
     }
   }

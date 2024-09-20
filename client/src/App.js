@@ -1,25 +1,45 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import Products from './components/Products';
+import ProductList from './components/ProductList';
 import './App.css';
 
-function App() {
+
+const App = () => {
+  const [contract,setContract] = useState(null);
+  const [productIds, setProductsIds] = useState([]);
+
+  const initContract = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const supplychaincontract = new ethers.Contract(
+      '',
+      supplychainartifact.abi,
+      signer
+    );
+    
+  setContract(supplychaincontract);
+  
+  };
+
+  useEffect(() => {
+    initContract();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Supply Chain DApp</h1>
+      {contract && (
+        <>
+          <Products contract={contract} />
+          <ProductList contract={contract} />
+          <ChangeState contract={contract} productIds={productIds} />
+        
+        </>
+      )}
+    
     </div>
   );
-}
+
+};
 
 export default App;
