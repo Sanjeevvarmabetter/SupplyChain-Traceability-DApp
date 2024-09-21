@@ -1,21 +1,21 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-    const SupplyChain = await ethers.getContractFactory("SupplyChain");
-
+    const Box = await ethers.getContractFactory("SupplyChain");
+    console.log("Deploying SupplyChain...");
     
-    const supplychain = await SupplyChain.deploy();
 
+    const box = await Box.deploy();
     
-    await supplychain.deployed();
 
+    await box.waitForDeployment();
     
-    console.log("SupplyChain deployed to: ", supplychain.address);
+    console.log("SupplyChain deployed to:", box.target);
 }
 
 main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
