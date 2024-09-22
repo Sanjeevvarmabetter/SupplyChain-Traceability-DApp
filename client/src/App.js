@@ -5,61 +5,62 @@ import ProductsList from './components/ProductList.jsx';
 import ChangeState from './components/ChangeState.jsx';
 import abi from './contractJson/SupplyChain.json';
 
-
-
 const App = () => {
+    const [state, setState] = useState({
+        provider: null,
+        signer: null,
+        contract: null,
+    });
 
-	const [state,setState] = useState({
-		provider:null,
-		signer:null,
-		contract:null,
-	});
+    const [account, setAccount] = useState('Not connected');
+    const [productIds, setProductIds] = useState([]); 
 
-	const [account,setAccount] = useState('Not connected');
+    useEffect(() => {
+        const init = async () => {
+            const contractAddress = "0xf6ceB6BB9E293E6961f067b84ac8Bef978b7295d";
+            const contractABI = abi.abi;
 
-	useEffect(() => {
-		const init = async () => {
-			const contractAddress = "";
-			const contractABI = abi.abi;
+            try {
+                const { ethereum } = window;
 
-			try {
-				const { ethereum } = window;
+                if (!ethereum) {
+                    console.error('Ethereum object not found, install Metamask.');
+                    return;
+                }
 
-				const accounts = await ethereum.request({ method: 'eth_requestAccounts'});
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                setAccount(accounts[0]);
 
+	
+				const provider = new ethers.BrowserProvider(ethereum);
 
-				setAccount(accounts[0]);
-
-				const provider = new ethers.providers.Web3Provider(ethereum);
 				const signer = provider.getSigner();
 
+                const contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
+                setState({ provider, signer, contract: contractInstance });
 
 
-				const contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
-				setState({ provider, signer, contract: contractInstance });
-		
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-			} catch(error) {
-				console.log(error);
-			}
-
-		};
-
-		init();
-	}, []);
+        init();
+    }, []);
 
 
+	const {  contract } = state;
 
-	return (
-		<div>
-		<h1>Supply Chain Managgemtn System</h1>
-		{contract && <Products contract={contract} />}
-		{contract && <ProductsList contract={contract} />}
-		{contract && <ChangeState contract={contract} productIds={productIds}/>}
 
-		</div>
-	);
+    return (
+        <div>
+            <h1>Supply Chain Management System</h1>
+			
+            {state.contract && <Products contract={state.contract} />}
+            {state.contract && <ProductsList contract={state.contract} />}
+            {state.contract && <ChangeState contract={state.contract} productIds={productIds} />}
+        </div>
+    );
 };
-
 
 export default App;
