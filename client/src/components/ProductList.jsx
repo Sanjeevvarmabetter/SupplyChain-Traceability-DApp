@@ -26,7 +26,7 @@ const ProductList = ({ contract }) => {
         {products.map((product, index) => (
           <li key={index}>
             <h3>{product[0]}</h3>
-            <p>Quantity: {product[1]}</p>
+            <p>Quantity: {product[1].toString()}</p>
             <p>Producer: {product[2]}</p>
             <p>Distributor: {product[3]}</p>
             <p>Retailer: {product[4]}</p>
@@ -36,4 +36,5 @@ const ProductList = ({ contract }) => {
     </div>
   );
 };
+
 export default ProductList;
